@@ -1,27 +1,23 @@
 const express = require('express');
-const connectDB = require("./config/db")
-const Employee = require("./models/Employee")
-const cors = require("cors")
-const bodyParser = require("body-parser")
+const connectDB = require('./config/db');
+const cors = require('cors');
+require('dotenv').config();
+
 const app = express();
 
-//Routes
-const creationRoutes = require("./routes/creationRoutes");
-// Middleware to parse JSON
-app.use(bodyParser.urlencoded({extended:true}))
-app.use(bodyParser.json())
-app.use(cors())
+// Middleware
+app.use(express.json());
+app.use(cors());
 
-connectDB()
-const PORT = 3000;
-app.use("api/creation",creationRoutes)
+// Connect Database
+connectDB();
 
-// Define a simple route
-app.get('/', (req, res) => {
-    res.send('Hello, Express!');
-});
+// Routes
+app.use('/api/employees', require('./routes/employeeRoutes'));
+app.use('/api/attendance', require('./routes/attendanceRoutes'));
+app.use('/api/leave', require('./routes/leaveRoutes'));
+app.use('/api/performance', require('./routes/performanceRoutes'));
+app.use('/api/managers', require('./routes/employeeRoutes'));
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

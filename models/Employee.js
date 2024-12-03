@@ -11,7 +11,7 @@ const EmployeeSchema = new mongoose.Schema({
         unique: true,
     },
     dateOfBirth: {
-        type: Date,
+        type: String,
     },
     residence: {
         type: String,
